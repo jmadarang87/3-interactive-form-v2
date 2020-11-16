@@ -97,11 +97,49 @@ activitySection.addEventListener( 'change', e => {
         activityCost.textContent = `TOTAL COST: $${totalCost}`; 
         for ( let i = 0; i < activityInput.length; i++ ) {
             if ( activityInput[i].getAttribute('data-day-and-time') === dataDate ) {
-                activityInput[i].disabled = "";
+                activityInput[i].disabled = false;
             }
         }     
     }
 
 })
 
-// disabling conflicting acvities
+// payment stuff
+
+const paymentMethod = document.getElementById('payment');
+const paymentOptions = paymentMethod.children;
+
+
+const divCreditCard = document.getElementById('credit-card');
+const divPayPal = document.getElementById('paypal');
+const divBitcoin = document.getElementById('bitcoin');
+
+
+function paymentDefault() {
+    for ( let i = 0; i < paymentOptions.length; i++ ) {
+        paymentOptions[0].hidden = true;
+        paymentOptions[1].selected = true;
+    } divCreditCard.style.display = "";
+    divPayPal.style.display = "none";
+    divBitcoin.style.display = "none";
+}
+
+paymentDefault();
+
+paymentMethod.addEventListener('change', e => {
+    const paymentType = e.target.value;
+    if ( paymentType === 'paypal') {
+        divCreditCard.style.display = "none";
+        divPayPal.style.display = "";
+        divBitcoin.style.display = "none";
+    } else if ( paymentType === 'bitcoin') {
+        divCreditCard.style.display = "none";
+        divPayPal.style.display = "none";
+        divBitcoin.style.display = "";
+    } else {
+        divCreditCard.style.display = "";
+        divPayPal.style.display = "none";
+        divBitcoin.style.display = "none";
+        }
+})
+
