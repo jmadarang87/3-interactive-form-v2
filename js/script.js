@@ -36,7 +36,6 @@ function hiddenColor() {
 
 hiddenColor();
 
-
 const designList = document.getElementById('design');
 const regexPuns = /JS Puns/;
 const regexHeart = /JS shirt/;
@@ -69,17 +68,25 @@ designList.addEventListener( 'change', e => {
         } 
 })
 
-/*
-              <option>Select Theme</option>
-              <option value="js puns">Theme - JS Puns</option>
-              <option value="heart js">Theme - I &#9829; JS</option>
+// activity section stuff! 
 
-<select id="color">
-<option value="cornflowerblue">Cornflower Blue (JS Puns shirt only)</option>
-<option value="darkslategrey">Dark Slate Grey (JS Puns shirt only)</option> 
-<option value="gold">Gold (JS Puns shirt only)</option>
-<option value="tomato">Tomato (I &#9829; JS shirt only)</option>
-<option value="steelblue">Steel Blue (I &#9829; JS shirt only)</option> 
-<option value="dimgrey">Dim Grey (I &#9829; JS shirt only)</option> 
-</select>
-*/
+const activityCost = document.createElement('div');
+const activitySection = document.querySelector('.activities');
+let totalCost = 0;
+
+activityCost.className = `totalCost`;
+activityCost.textContent = `TOTAL COST: $${totalCost}`;
+activitySection.appendChild(activityCost);
+
+activitySection.addEventListener( 'change', e => {
+    const activityClicked = e.target;
+    const isChecked = activityClicked.checked;
+    const dataCost = activityClicked.getAttribute('data-cost');
+    if (isChecked) {
+        totalCost = parseInt(totalCost) + parseInt(dataCost);
+        activityCost.textContent = `TOTAL COST: $${totalCost}`;
+    } else {
+        totalCost = parseInt(totalCost) - parseInt(dataCost);
+        activityCost.textContent = `TOTAL COST: $${totalCost}`;      
+    }
+})
