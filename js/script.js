@@ -68,7 +68,7 @@ designList.addEventListener( 'change', e => {
         } 
 })
 
-// activity section stuff! 
+// activity total cost! 
 
 const activityCost = document.createElement('div');
 const activitySection = document.querySelector('.activities');
@@ -77,16 +77,31 @@ let totalCost = 0;
 activityCost.className = `totalCost`;
 activityCost.textContent = `TOTAL COST: $${totalCost}`;
 activitySection.appendChild(activityCost);
+const activityInput = activitySection.querySelectorAll('input');
 
 activitySection.addEventListener( 'change', e => {
     const activityClicked = e.target;
     const isChecked = activityClicked.checked;
     const dataCost = activityClicked.getAttribute('data-cost');
+    const dataDate = activityClicked.getAttribute('data-day-and-time');
     if (isChecked) {
         totalCost = parseInt(totalCost) + parseInt(dataCost);
         activityCost.textContent = `TOTAL COST: $${totalCost}`;
+        for ( let i = 0; i < activityInput.length; i++ ) {
+            if ( activityInput[i].getAttribute('data-day-and-time') === dataDate && activityInput[i] !== activityClicked) {
+                activityInput[i].disabled = true;
+            } 
+        }
     } else {
         totalCost = parseInt(totalCost) - parseInt(dataCost);
-        activityCost.textContent = `TOTAL COST: $${totalCost}`;      
+        activityCost.textContent = `TOTAL COST: $${totalCost}`; 
+        for ( let i = 0; i < activityInput.length; i++ ) {
+            if ( activityInput[i].getAttribute('data-day-and-time') === dataDate ) {
+                activityInput[i].disabled = "";
+            }
+        }     
     }
+
 })
+
+// disabling conflicting acvities
