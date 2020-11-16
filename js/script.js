@@ -143,3 +143,73 @@ paymentMethod.addEventListener('change', e => {
         }
 })
 
+// form validation
+const name = document.getElementById('name');
+const email = document.getElementById('mail');
+const activities = document.querySelectorAll('input[type="checkbox"');
+const cardNumber = document.getElementById('cc-num');
+const zip = document.getElementById('zip');
+const cvv = document.getElementById('cvv');
+
+function isValidName(name) {
+    const regex = /^\D+\s*\D*$/i;
+    return regex.test(name);
+}
+
+function isValidEmail(email) {
+    const regex = /^[^@]+@[^@]+\.[^@]+$/i;
+    return regex.test(email);
+}
+
+function isValidActivities() {
+    let checked  = 0
+    for (let i = 0; i < activities.length; i++ ) {
+        if ( activities[i].checked ) {
+            checked = checked + 1;
+        }
+    }   if (checked > 0) {
+        return true;
+        } else {
+        return false;
+    }
+}
+
+function isValidCreditCard(cardInput) {
+    const regex =/^\d{13,16}$/
+    return regex.test(cardInput);
+}
+
+function isValidZip(zipInput) {
+    const regex =/^\d{5}$/
+    return regex.test(zipInput);
+}
+
+function isValidCVV(cvvInput) {
+    const regex =/^\d{3}$/
+    return regex.test(cvvInput);
+}
+
+const submit = document.querySelector('button');
+
+submit.addEventListener('click', e => {
+    e.preventDefault();
+    const nameInput = name.value;
+    const emailInput = email.value;
+    const cardInput = parseInt(cardNumber.value);
+    const zipInput = parseInt(zip.value);
+    const cvvInput = parseInt(cvv.value);
+    if ( paymentOptions[1].selected ) {
+    if (isValidName(nameInput) && isValidEmail(emailInput) 
+        && isValidActivities() && isValidCreditCard(cardInput) && isValidZip(zipInput)
+        && isValidCVV(cvvInput)) {
+        console.log('REGISTERED!');
+        } else {
+        console.log('FAILED');
+        }
+    } else if (isValidName(nameInput) && isValidEmail(emailInput) 
+    && isValidActivities()) {
+    console.log('REGISTERED!');
+    } else {
+    console.log('FAILED');
+    }
+})
