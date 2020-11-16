@@ -151,14 +151,29 @@ const cardNumber = document.getElementById('cc-num');
 const zip = document.getElementById('zip');
 const cvv = document.getElementById('cvv');
 
-function isValidName(name) {
+function isValidName(nameInput) {
     const regex = /^\D+\s*\D*$/i;
-    return regex.test(name);
+    const valid = regex.test(nameInput);
+    if ( valid ) {
+        name.style.border = "";
+    return valid;
+    } else {
+        name.style.border = "2px solid red";
+        return valid;
+    }
 }
 
-function isValidEmail(email) {
+function isValidEmail(emailInput) {
     const regex = /^[^@]+@[^@]+\.[^@]+$/i;
-    return regex.test(email);
+    const valid = regex.test(email);
+    if ( valid ) {
+        email.style.border = "";
+    return valid;
+    } else {
+        email.style.border = "2px solid red";
+        return valid;
+    }
+
 }
 
 function isValidActivities() {
@@ -175,18 +190,39 @@ function isValidActivities() {
 }
 
 function isValidCreditCard(cardInput) {
-    const regex =/^\d{13,16}$/
-    return regex.test(cardInput);
+    const regex =/^\d{13,16}$/;
+    const valid = regex.test(cardInput);
+    if ( valid ) {
+        cardNumber.style.border = "";
+        return valid;
+    } else {
+        cardNumber.style.border = "2px solid red";
+        return valid;
+    }
 }
 
 function isValidZip(zipInput) {
-    const regex =/^\d{5}$/
-    return regex.test(zipInput);
+    const regex =/^\d{5}$/;
+    const valid = regex.test(zipInput);
+    if ( valid ) {
+        zip.style.border = "";
+        return valid;
+    } else {
+        zip.style.border = "2px solid red";
+        return valid;
+    }
 }
 
 function isValidCVV(cvvInput) {
-    const regex =/^\d{3}$/
-    return regex.test(cvvInput);
+    const regex =/^\d{3}$/;
+    const valid = regex.test(cvvInput);
+    if ( valid ) {
+        cvv.style.border = "";
+        return valid;
+    } else {
+        cvv.style.border = "2px solid red";
+        return valid;
+    }   
 }
 
 const submit = document.querySelector('button');
@@ -198,6 +234,11 @@ submit.addEventListener('click', e => {
     const cardInput = parseInt(cardNumber.value);
     const zipInput = parseInt(zip.value);
     const cvvInput = parseInt(cvv.value);
+    isValidName(nameInput);
+    isValidEmail(emailInput);
+    isValidCreditCard(cardInput);
+    isValidZip(zipInput);
+    isValidCVV(cvvInput);
     if ( paymentOptions[1].selected ) {
     if (isValidName(nameInput) && isValidEmail(emailInput) 
         && isValidActivities() && isValidCreditCard(cardInput) && isValidZip(zipInput)
