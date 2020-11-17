@@ -146,45 +146,70 @@ paymentMethod.addEventListener('change', e => {
 // form validation
 const name = document.getElementById('name');
 const email = document.getElementById('mail');
-const activities = document.querySelectorAll('input[type="checkbox"');
+const activities = document.querySelectorAll('input[type="checkbox"]');
 const cardNumber = document.getElementById('cc-num');
 const zip = document.getElementById('zip');
 const cvv = document.getElementById('cvv');
+const activityHeader = document.querySelector('activities');
+
+// error messages
+const attn = `<i class="fas fa-exclamation-triangle"></i>`;
+const nameError = `${attn} Name: Please make sure your name is entered correctly.`;
+const emailError = `${attn} Email: Please enter a valid email address.`;
+const activityError = `${attn} Register for Activities: Please select at least one activity`;
+const cardError = `${attn} Card Number must be 13-16 digits long.`;
+const zipError = `${attn} Zip Code must be 5 digits long.`;
+const cvvError = `${attn} CVV must be 3 digits long.`;
 
 function isValidName(nameInput) {
     const regex = /^\D+\s*\D*$/i;
     const valid = regex.test(nameInput);
+    const input = name.previousElementSibling;
     if ( valid ) {
         name.style.border = "";
-    return valid;
+        input.innerHTML = "Name:";
+        input.style.color = "";
+        return valid;
     } else {
         name.style.border = "2px solid red";
+        input.innerHTML = nameError;
+        input.style.color = "red";
         return valid;
     }
 }
 
 function isValidEmail(emailInput) {
-    const regex = /^[^@]+@[^@]+\.[^@]+$/i;
-    const valid = regex.test(email);
+    const regex = /^[^@]+@[^@]+\.[^@.]+$/i;
+    const valid = regex.test(emailInput);
+    const input = email.previousElementSibling;
     if ( valid ) {
         email.style.border = "";
-    return valid;
+        input.innerHTML = "Email:";
+        input.style.color = "";
+        return valid;
     } else {
         email.style.border = "2px solid red";
+        input.innerHTML = emailError;
+        input.style.color = "red";
         return valid;
     }
-
 }
 
+const span = document.createElement('span');
+activitySection.prepend(span);
+
 function isValidActivities() {
-    let checked  = 0
+    let checked  = 0;
     for (let i = 0; i < activities.length; i++ ) {
         if ( activities[i].checked ) {
-            checked = checked + 1;
+            checked++;
         }
     }   if (checked > 0) {
+        span.innerHTML = "";
         return true;
         } else {
+        span.innerHTML = activityError;
+        span.style.color = "red";
         return false;
     }
 }
@@ -192,11 +217,16 @@ function isValidActivities() {
 function isValidCreditCard(cardInput) {
     const regex =/^\d{13,16}$/;
     const valid = regex.test(cardInput);
+    const input = cardNumber.previousElementSibling;
     if ( valid ) {
         cardNumber.style.border = "";
+        input.innerHTML = "Card Number:";
+        input.style.color = "";
         return valid;
     } else {
         cardNumber.style.border = "2px solid red";
+        input.innerHTML = cardError;
+        input.style.color = "red";
         return valid;
     }
 }
@@ -204,11 +234,16 @@ function isValidCreditCard(cardInput) {
 function isValidZip(zipInput) {
     const regex =/^\d{5}$/;
     const valid = regex.test(zipInput);
+    const input = zip.previousElementSibling;
     if ( valid ) {
         zip.style.border = "";
+        input.innerHTML = "Zip Code:";
+        input.style.color = "";
         return valid;
     } else {
         zip.style.border = "2px solid red";
+        input.innerHTML = zipError;
+        input.style.color = "red";
         return valid;
     }
 }
@@ -216,13 +251,18 @@ function isValidZip(zipInput) {
 function isValidCVV(cvvInput) {
     const regex =/^\d{3}$/;
     const valid = regex.test(cvvInput);
+    const input = cvv.previousElementSibling;
     if ( valid ) {
         cvv.style.border = "";
+        input.innerHTML = "CVV:";
+        input.style.color = "";
         return valid;
     } else {
         cvv.style.border = "2px solid red";
+        input.innerHTML = cvvError;
+        input.style.color = "red";
         return valid;
-    }   
+    }
 }
 
 const submit = document.querySelector('button');
@@ -236,6 +276,7 @@ submit.addEventListener('click', e => {
     const cvvInput = parseInt(cvv.value);
     isValidName(nameInput);
     isValidEmail(emailInput);
+    isValidActivities();
     isValidCreditCard(cardInput);
     isValidZip(zipInput);
     isValidCVV(cvvInput);
