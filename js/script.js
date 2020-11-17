@@ -101,7 +101,6 @@ activitySection.addEventListener( 'change', e => {
             }
         }     
     }
-
 })
 
 // payment stuff
