@@ -19,7 +19,7 @@ jobRole.addEventListener('change', e => {
  T-SHIRT SECTION 
  -------------------------- */ 
 
- // hides color dropdown at pageload
+ // “Color” drop down menu is hidden until a T-Shirt design is selected.
 const shirtColor = document.getElementById('color');
 shirtColor.parentNode.hidden = "true";
 const colorList = shirtColor.children;
@@ -32,18 +32,7 @@ colorOption.idName = "color";
 colorOption.innerHTML = `Please select a T-shirt theme`;
 shirtColor.appendChild(colorOption);
 
-// hides color dropdowns at start.
-function hiddenColor() {
-    for ( let i = 0; i < colorList.length; i++ ) {
-        colorList[i].hidden = "true";
-    }
-}
-
-hiddenColor();
-
-
-
-
+// function to match color to design options
 const designList = document.getElementById('design');
 const regexPuns = /JS Puns/;
 const regexHeart = /JS shirt/;
@@ -78,7 +67,9 @@ designList.addEventListener( 'change', e => {
         } 
 })
 
-// activity total cost! 
+/* -------------------------- 
+ACTIVITY SECTION 
+ -------------------------- */ 
 
 const activityCost = document.createElement('div');
 const activitySection = document.querySelector('.activities');
@@ -89,6 +80,7 @@ activityCost.textContent = `TOTAL COST: $${totalCost}`;
 activitySection.appendChild(activityCost);
 const activityInput = activitySection.querySelectorAll('input');
 
+// calculates total cost for activities selected and disables same time activities 
 activitySection.addEventListener( 'change', e => {
     const activityClicked = e.target;
     const isChecked = activityClicked.checked;
@@ -113,17 +105,18 @@ activitySection.addEventListener( 'change', e => {
     }
 })
 
-// payment stuff
+/* -------------------------- 
+PAYMENT SECTION 
+ -------------------------- */ 
 
+ // defines global payment variables
 const paymentMethod = document.getElementById('payment');
 const paymentOptions = paymentMethod.children;
-
-
 const divCreditCard = document.getElementById('credit-card');
 const divPayPal = document.getElementById('paypal');
 const divBitcoin = document.getElementById('bitcoin');
 
-
+// sets default payment to credit card
 function paymentDefault() {
     for ( let i = 0; i < paymentOptions.length; i++ ) {
         paymentOptions[0].hidden = true;
@@ -135,6 +128,7 @@ function paymentDefault() {
 
 paymentDefault();
 
+// hides irrelevant payment sections when payment option is selected
 paymentMethod.addEventListener('change', e => {
     const paymentType = e.target.value;
     if ( paymentType === 'paypal') {
@@ -152,7 +146,11 @@ paymentMethod.addEventListener('change', e => {
         }
 })
 
-// form validation
+/* -------------------------- 
+VALIDATION SECTION 
+ -------------------------- */ 
+
+ // defines global validation variables
 const name = document.getElementById('name');
 const email = document.getElementById('mail');
 const activities = document.querySelectorAll('input[type="checkbox"]');
@@ -161,7 +159,7 @@ const zipCode = document.getElementById('zip');
 const cvvCode = document.getElementById('cvv');
 const activityHeader = document.querySelector('activities');
 
-// error messages
+// creates object or error messages
 const attn = `<i class="fas fa-exclamation-triangle"></i>`;
 let errorMessage = { 
     name: `${attn} Name: Cannot be blank or contain numbers.`,
@@ -177,11 +175,11 @@ let errorMessage = {
     cvv: `${attn} CVV must be 3 digits long.`
 };
 
+// valid + invalid styling
 function invalidStyle(title) {
     const input = title.previousElementSibling;
     title.style.border = "2px solid red";
     input.style.color = "red";
-    return input;
 }
 
 function validStyle(title) {
@@ -190,6 +188,7 @@ function validStyle(title) {
     input.style.color = "";
 }
 
+// name validation
 name.addEventListener('keyup', e => {
     isValidName(e.target.value)
 })
@@ -197,7 +196,6 @@ name.addEventListener('keyup', e => {
 name.addEventListener('blur', e => {
     isValidName(e.target.value)
 })
-
 
 function isValidName(nameInput) {
     const regex = /^\D+/i;
@@ -217,6 +215,7 @@ function isValidName(nameInput) {
     }
 }
 
+// email validation
 email.addEventListener('focus', e => {
     invalidStyle(email);
     const input = email.previousElementSibling;
@@ -226,7 +225,6 @@ email.addEventListener('focus', e => {
 email.addEventListener('keyup', e => {
     isValidEmail(e.target.value);
 })
-
 
 function isValidEmail(emailInput) {
     const regexOne= /\w@/;
@@ -259,6 +257,7 @@ function isValidEmail(emailInput) {
     }
 }
 
+// activity validation
 const span = document.createElement('span');
 activitySection.prepend(span);
 
@@ -278,9 +277,7 @@ function isValidActivities() {
     }
 }
 
-// format credit card 
-
-
+// credit card re-format and validation
 cardNumber.addEventListener('focus', e => {
     if ( e.target.value !== "" ) {
         const oldText = e.target.value;
@@ -324,6 +321,7 @@ function isValidCreditCard(cardInput) {
         }
     }
 
+// zip code validation
 zip.addEventListener('focus', e => {
     isValidZip(e.target.value);
 })
@@ -346,6 +344,7 @@ function isValidZip(zipInput) {
     }
 }
 
+// cvv validation
 cvvCode.addEventListener('focus', e => {
     isValidCVV(e.target.value);
 })
@@ -367,6 +366,8 @@ function isValidCVV(cvvInput) {
         input.innerHTML = `${errorMessage.cvv}`;
     }
 }
+
+// submit event listener that checks for validity and submits only if all requirements are met.
 
 const submit = document.querySelector('button');
 
