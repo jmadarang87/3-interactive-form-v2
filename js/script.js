@@ -18,6 +18,7 @@ jobRole.addEventListener('change', e => {
 // t-shirt stuff
 
 const shirtColor = document.getElementById('color');
+shirtColor.parentNode.hidden = "true";
 const colorList = shirtColor.children;
 
 colorOption = document.createElement('option');
@@ -44,6 +45,7 @@ designList.addEventListener( 'change', e => {
     for (let i = 0; i < colorList.length; i++ ) {
         colorList[i].hidden = "";
     } if ( e.target.value === "js puns" ) {
+        shirtColor.parentNode.hidden = "";
         for ( let i = 0; i < colorList.length; i++ ) {
             const designTheme = colorList[i].textContent;
             if (regexHeart.test(designTheme)) {
@@ -52,6 +54,7 @@ designList.addEventListener( 'change', e => {
             colorOption.hidden = true;
         }
     } else if ( e.target.value === "heart js") {
+        shirtColor.parentNode.hidden = "";
         for ( let i = 0; i < colorList.length; i++ ) {
             const designTheme = colorList[i].textContent;
             if (regexPuns.test(designTheme)) {
@@ -153,44 +156,91 @@ const activityHeader = document.querySelector('activities');
 
 // error messages
 const attn = `<i class="fas fa-exclamation-triangle"></i>`;
-const nameError = `${attn} Name: Please make sure your name is entered correctly.`;
-const emailError = `${attn} Email: Please enter a valid email address.`;
-const activityError = `${attn} Register for Activities: Please select at least one activity`;
-const cardError = `${attn} Card Number must be 13-16 digits long.`;
-const zipError = `${attn} Zip Code must be 5 digits long.`;
-const cvvError = `${attn} CVV must be 3 digits long.`;
+let errorMessage = { 
+    name: `${attn} Name: Cannot be blank or contain numbers.`,
+    nameDigits: `${attn} Name: Cannot contain numbers.`,
+    nameBlank: `${attn} Name: Cannot be blank.`,
+    email: `${attn} Email: Please enter a valid email address (example@mail.com).`,
+    emailAt: `${attn} Email: Please enter a valid email address (must contain '@').`,
+    activity: `${attn} Register for Activities: Please select at least one activity.`,
+    card: `${attn} Card Number must be 13-16 digits long.`,
+    cardFocus:`${attn} Card Number: Cannot be blank.`,
+    zipFocus: `${attn} Zip Code: Cannot be blank.`,
+    zip: `${attn} Zip Code must be 5 digits long.`,
+    cvv: `${attn} CVV must be 3 digits long.`
+};
+
+function invalidStyle(title) {
+    const input = title.previousElementSibling;
+    title.style.border = "2px solid red";
+    input.style.color = "red";
+    return input;
+}
+
+function validStyle(title) {
+    const input = title.previousElementSibling;
+    title.style.border = "";
+    input.style.color = "";
+}
+
+name.addEventListener('keyup', e => {
+    isValidName(e.target.value)
+})
+
+name.addEventListener('blur', e => {
+    isValidName(e.target.value)
+})
+
 
 function isValidName(nameInput) {
-    const regex = /^\D+\s*\D*$/i;
-    const valid = regex.test(nameInput);
+    const regex = /^\D+/i;
+    const digit = /\d/;
+    const validity = regex.test(nameInput);
     const input = name.previousElementSibling;
-    if ( valid ) {
-        name.style.border = "";
-        input.innerHTML = "Name:";
-        input.style.color = "";
-        return valid;
+    if ( nameInput === "" ) {
+        invalidStyle(name);
+        input.innerHTML = `${errorMessage.nameBlank}`;
+    } else if ( digit.test(nameInput)) {
+        invalidStyle(name);
+        input.innerHTML = `${errorMessage.nameDigits}`;
     } else {
-        name.style.border = "2px solid red";
-        input.innerHTML = nameError;
-        input.style.color = "red";
-        return valid;
+        validStyle(name);
+        input.innerHTML = "Name:";
+        return validity;
     }
 }
 
-function isValidEmail(emailInput) {
-    const regex = /^[^@]+@[^@]+\.[^@.]+$/i;
-    const valid = regex.test(emailInput);
+email.addEventListener('focus', e => {
+    invalidStyle(email);
     const input = email.previousElementSibling;
-    if ( valid ) {
-        email.style.border = "";
-        input.innerHTML = "Email:";
-        input.style.color = "";
-        return valid;
-    } else {
-        email.style.border = "2px solid red";
-        input.innerHTML = emailError;
-        input.style.color = "red";
-        return valid;
+    input.innerHTML = `${errorMessage.email}`;
+})
+
+email.addEventListener('keyup', e => {
+    isValidEmail(e.target.value);
+})
+
+
+function isValidEmail(emailInput) {
+    const regexOne= /\w@/;
+    const regexTwo = /^[^@]+@[^@]+\.[^.]+$/i;
+    const validOne = regexOne.test(emailInput);
+    const validTwo = regexTwo.test(emailInput);
+    const input = email.previousElementSibling;
+    if (emailInput !== "" ) {
+        if ( validOne && validTwo ) {
+            validStyle(email);
+            input.innerHTML = "Email:";
+            return validOne;
+        } else if ( !validOne ) {
+            invalidStyle(email);
+            input.innerHTML = `${errorMessage.emailAt}`;
+            return validOne;
+        } else if ( !validTwo ) {
+            invalidStyle(email);
+            input.innerHTML = `${errorMessage.email}`;
+            return validTwo;
+        } 
     }
 }
 
@@ -207,67 +257,100 @@ function isValidActivities() {
         span.innerHTML = "";
         return true;
         } else {
-        span.innerHTML = activityError;
+        span.innerHTML = `${errorMessage.activity}`;
         span.style.color = "red";
         return false;
     }
 }
 
+// format credit card 
+
+cardNumber.addEventListener('focus', e => {
+    if ( e.target.value !== "" ) {
+        const old = e.target.value;
+        const newText = old.replace(/-/g, "");
+        e.target.value = newText;
+    }
+})
+
+cardNumber.addEventListener('blur', e => {
+    if ( isValidCreditCard(e.target.value)) {
+        e.target.value = formatCardNumber(e.target.value);
+    }
+})
+
+cardNumber.addEventListener('keyup', e => {
+    isValidCreditCard(e.target.value);
+})
+
+function formatCardNumber(num) {
+    const regex = /^(\d{4})(\d{4})(\d{4})(\d+)$/;
+    const replacement = `$1-$2-$3-$4`;
+    return num.replace(regex, replacement);
+}
+
 function isValidCreditCard(cardInput) {
     const regex =/^\d{13,16}$/;
-    const valid = regex.test(cardInput);
+    const validity = regex.test(cardInput);
     const input = cardNumber.previousElementSibling;
-    if ( valid ) {
-        cardNumber.style.border = "";
+    if ( validity ) {
+        validStyle(cardNumber)
         input.innerHTML = "Card Number:";
-        input.style.color = "";
-        return valid;
+        return validity;
     } else {
-        cardNumber.style.border = "2px solid red";
-        input.innerHTML = cardError;
-        input.style.color = "red";
-        return valid;
+        invalidStyle(cardNumber);
+        input.innerHTML = `${errorMessage.card}`;
+        return validity;
     }
 }
 
+zip.addEventListener('focus', e => {
+    isValidZip(e.target.value);
+})
+
+zip.addEventListener('keyup', e => {
+    isValidZip(e.target.value);
+})
+
 function isValidZip(zipInput) {
     const regex =/^\d{5}$/;
-    const valid = regex.test(zipInput);
+    const validity = regex.test(zipInput);
     const input = zipCode.previousElementSibling;
-    if ( valid ) {
-        zipCode.style.border = "";
+    if ( validity ) {
+        validStyle(zip);
         input.innerHTML = "Zip Code:";
-        input.style.color = "";
-        return valid;
+        return validity
     } else {
-        zipCode.style.border = "2px solid red";
-        input.innerHTML = zipError;
-        input.style.color = "red";
-        return valid;
+        invalidStyle(zip);
+        input.innerHTML = `${errorMessage.zip}`;
     }
 }
+
+cvvCode.addEventListener('focus', e => {
+    isValidCVV(e.target.value);
+})
+
+cvvCode.addEventListener('keyup', e => {
+    isValidCVV(e.target.value);
+})
 
 function isValidCVV(cvvInput) {
     const regex =/^\d{3}$/;
     const valid = regex.test(cvvInput);
     const input = cvvCode.previousElementSibling;
     if ( valid ) {
-        cvvCode.style.border = "";
+        validStyle(cvv);
         input.innerHTML = "CVV:";
-        input.style.color = "";
         return valid;
     } else {
-        cvvCode.style.border = "2px solid red";
-        input.innerHTML = cvvError;
-        input.style.color = "red";
-        return valid;
+        invalidStyle(cvv);
+        input.innerHTML = `${errorMessage.cvv}`;
     }
 }
 
 const submit = document.querySelector('button');
 
 submit.addEventListener('click', e => {
-    e.preventDefault();
     const nameInput = name.value;
     const emailInput = email.value;
     const cardInput = parseInt(cardNumber.value);
@@ -283,14 +366,16 @@ submit.addEventListener('click', e => {
     if (isValidName(nameInput) && isValidEmail(emailInput) 
         && isValidActivities() && isValidCreditCard(cardInput) && isValidZip(zipInput)
         && isValidCVV(cvvInput)) {
-        console.log('REGISTERED!');
+        console.log(`YAY! YOU'RE REGISTERED!`);
         } else {
-        console.log('FAILED');
+        console.log(`UH OH! PLEASE DOUBLE CHECK YOUR FORM.`);
+        e.preventDefault();
         }
     } else if (isValidName(nameInput) && isValidEmail(emailInput) 
     && isValidActivities()) {
-    console.log('REGISTERED!');
+    console.log(`YAY! YOU'RE REGISTERED!`);
     } else {
-    console.log('FAILED');
+    console.log(`UH OH! PLEASE DOUBLE CHECK YOUR FORM.`);
+    e.preventDefault();
     }
 })
