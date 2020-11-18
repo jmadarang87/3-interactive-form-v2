@@ -1,12 +1,15 @@
+/* -------------------------- 
+BASIC INFO SECTION 
+ -------------------------- */ 
 
-const jobRole = document.getElementById('title');
-const otherTitle = document.getElementById('other-title');
-
-// beginning new page load
+ // beginning new page load focus on name input
 document.getElementById('name').focus();
-otherTitle.style.display = "none";
 
 // event listener on "other" select dropdown to hide + display "other" text field
+const jobRole = document.getElementById('title');
+const otherTitle = document.getElementById('other-title');
+otherTitle.style.display = "none";
+
 jobRole.addEventListener('change', e => {
     if (e.target.value === "other") {
         otherTitle.style.display = "";
@@ -283,7 +286,6 @@ cardNumber.addEventListener('focus', e => {
         const oldText = e.target.value;
         const newText = oldText.replace(/-/g, "");
         e.target.value = newText;
-        console.log(newText);
     }
 })
 
