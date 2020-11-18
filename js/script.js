@@ -15,12 +15,16 @@ jobRole.addEventListener('change', e => {
     }
 })
 
-// t-shirt stuff
+/* -------------------------- 
+ T-SHIRT SECTION 
+ -------------------------- */ 
 
+ // hides color dropdown at pageload
 const shirtColor = document.getElementById('color');
 shirtColor.parentNode.hidden = "true";
 const colorList = shirtColor.children;
 
+// creates new color option to select t-shirt theme.
 colorOption = document.createElement('option');
 colorOption.value = 'color';
 colorOption.selected = 'true';
@@ -28,14 +32,17 @@ colorOption.idName = "color";
 colorOption.innerHTML = `Please select a T-shirt theme`;
 shirtColor.appendChild(colorOption);
 
+// hides color dropdowns at start.
 function hiddenColor() {
     for ( let i = 0; i < colorList.length; i++ ) {
         colorList[i].hidden = "true";
     }
-
 }
 
 hiddenColor();
+
+
+
 
 const designList = document.getElementById('design');
 const regexPuns = /JS Puns/;
@@ -273,6 +280,7 @@ function isValidActivities() {
 
 // format credit card 
 
+
 cardNumber.addEventListener('focus', e => {
     if ( e.target.value !== "" ) {
         const oldText = e.target.value;
@@ -299,19 +307,22 @@ function formatCardNumber(num) {
 }
 
 function isValidCreditCard(cardInput) {
-    const regex =/^\d{13,16}$/;
-    const validity = regex.test(cardInput);
-    const input = cardNumber.previousElementSibling;
-    if ( validity ) {
-        validStyle(cardNumber)
-        input.innerHTML = "Card Number:";
-        return validity;
-    } else {
-        invalidStyle(cardNumber);
-        input.innerHTML = `${errorMessage.card}`;
-        return validity;
+        const hyphenRegex = /-/g;
+        const newText = cardInput.replace(hyphenRegex, "");
+        const ccNum = parseInt(newText);
+        const ccRegex =/^\d{13,16}$/;
+        const validity = ccRegex.test(ccNum);
+        const input = cardNumber.previousElementSibling;
+        if ( validity ) {
+            validStyle(cardNumber)
+            input.innerHTML = "Card Number:";
+            return validity;
+        } else {
+            invalidStyle(cardNumber);
+            input.innerHTML = `${errorMessage.card}`;
+            return validity;
+        }
     }
-}
 
 zip.addEventListener('focus', e => {
     isValidZip(e.target.value);
@@ -362,7 +373,7 @@ const submit = document.querySelector('button');
 submit.addEventListener('click', e => {
     const nameInput = name.value;
     const emailInput = email.value;
-    const cardInput = parseInt(cardNumber.value);
+    const cardInput = cardNumber.value;
     const zipInput = parseInt(zip.value);
     const cvvInput = parseInt(cvv.value);
     isValidName(nameInput);
