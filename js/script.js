@@ -240,7 +240,15 @@ function isValidEmail(emailInput) {
             invalidStyle(email);
             input.innerHTML = `${errorMessage.email}`;
             return validTwo;
-        } 
+        } else {
+            invalidStyle(email);
+            input.innerHTML = `${errorMessage.email}`;
+            return false;
+        }
+    } else {
+        invalidStyle(email);
+        input.innerHTML = `${errorMessage.email}`;
+        return false; 
     }
 }
 
@@ -267,9 +275,10 @@ function isValidActivities() {
 
 cardNumber.addEventListener('focus', e => {
     if ( e.target.value !== "" ) {
-        const old = e.target.value;
-        const newText = old.replace(/-/g, "");
+        const oldText = e.target.value;
+        const newText = oldText.replace(/-/g, "");
         e.target.value = newText;
+        console.log(newText);
     }
 })
 
