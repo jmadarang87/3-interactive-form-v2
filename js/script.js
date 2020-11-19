@@ -371,9 +371,9 @@ function isValidCVV(cvvInput) {
 
 // submit event listener that checks for validity and submits only if all requirements are met.
 
-const submit = document.querySelector('button');
+const form = document.querySelector('form');
 
-submit.addEventListener('click', e => {
+form.addEventListener('submit', e => {
     const nameInput = name.value;
     const emailInput = email.value;
     const cardInput = cardNumber.value;
