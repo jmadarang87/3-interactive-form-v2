@@ -231,7 +231,7 @@ email.addEventListener('keyup', e => {
 
 function isValidEmail(emailInput) {
     const regexOne= /\w@/;
-    const regexTwo = /^[^@]+@[^@]+\.[^.]+$/i;
+    const regexTwo = /^[^@]+@[^@]+\.[^.][^.]+$/i;
     const validOne = regexOne.test(emailInput);
     const validTwo = regexTwo.test(emailInput);
     const input = email.previousElementSibling;
