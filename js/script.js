@@ -308,9 +308,8 @@ function formatCardNumber(num) {
 function isValidCreditCard(cardInput) {
         const hyphenRegex = /-/g;
         const newText = cardInput.replace(hyphenRegex, "");
-        const ccNum = parseInt(newText);
         const ccRegex =/^\d{13,16}$/;
-        const validity = ccRegex.test(ccNum);
+        const validity = ccRegex.test(newText);
         const input = cardNumber.previousElementSibling;
         if ( validity ) {
             validStyle(cardNumber)
