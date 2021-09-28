@@ -2,7 +2,7 @@
   Base Element Styles
 ==================================== */
 
-@import url('https://fonts.googleapis.com/css?family=Nunito|Roboto+Mono');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;400;600;700&family=Raleway&display=swap');
 
 * {
   box-sizing: border-box;
@@ -11,23 +11,24 @@
 body,
 input,
 button {
-	font-family: 'Nunito', sans-serif;
+	font-family: 'Josefin Sans', sans-serif;
 }
 
 body {
   font: 1em/1.5;
-  color: rgba(124, 6, 179, 0.9);
-	background: #000000;
+  color: #9D46FF;
+  background: white;
 }
 
 header {
 	text-align: center;
-	color: white;
+	color: #9D46FF;
+
 }
 
 h1 {
 	font-size: 2.5em;
-	text-shadow: 3px 3px 3px rgba(209, 61, 223, 0.85);
+	text-shadow: 3px 3px 3px #00C2CB;
 	margin: 0;
 }
 
@@ -42,8 +43,8 @@ a {
 form {
 	padding: .875em 1.875em 1.875em;
 	background: #ffffff;
-	border: 2px solid rgba(0, 0, 0, 0.6);
-	border-radius: 3px;
+	border: 5px solid rgba(0, 0, 0, 0.6);
+	border-radius: 5px;
 }
 
 fieldset,
@@ -65,7 +66,7 @@ button {
 legend {
 	font-weight: bold;
 	padding-top: .5em;
-	border-top: 2px solid rgba(0, 0, 0, 0.6);
+	border-top: 2px solid rgba(0, 0, 0);
 	margin-bottom: 1.125em;
 }
 
@@ -90,14 +91,14 @@ input {
 	font-size: 1em;
 	font-weight: 500;
 	padding: .8em;
-	background: #e3d4e9;
+	background: #e5feff;
 	border: 2px solid rgb(0, 0, 0);
 	border-radius: 3px;
 	outline: none;
 }
 
 input:focus {
-	background: #fff;
+	background: #00C2CB;
 	border-color: #000000;
 	transition: border-color .4s, background-color .4s;
 }
@@ -120,7 +121,7 @@ button {
 
 button:hover {
 	color: white;
-	background: rgba(209, 61, 223);
+	background: #9D46FF;
 }
 
 input, 
